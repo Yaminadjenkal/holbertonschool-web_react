@@ -3,6 +3,7 @@
 
 namespace Subjects {
     export interface Teacher {
+      [x: string]: any;
       experienceTeachingJava?: number;
     }
   
