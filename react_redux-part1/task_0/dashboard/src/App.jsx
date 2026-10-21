@@ -1,3 +1,4 @@
+import React, { Fragment } from 'react';
 import Notifications from './components/Notifications/Notifications';
 import Header from './components/Header/Header';
 import Login from './pages/Login/Login';
