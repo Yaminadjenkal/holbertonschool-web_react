@@ -17,10 +17,11 @@ export const fetchNotifications = createAsyncThunk(
       if (notification.id === 3) {
         return {
           ...notification,
-          value: getLatestNotification(),
+          html: {
+            __html: getLatestNotification(),
+          },
         };
       }
-
       return notification;
     });
 
