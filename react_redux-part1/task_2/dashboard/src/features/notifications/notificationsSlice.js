@@ -22,6 +22,7 @@ export const fetchNotifications = createAsyncThunk(
           },
         };
       }
+
       return notification;
     });
 
@@ -58,12 +59,9 @@ const notificationsSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(
-      fetchNotifications.fulfilled,
-      (state, action) => {
-        state.notifications = action.payload;
-      }
-    );
+    builder.addCase(fetchNotifications.fulfilled, (state, action) => {
+      state.notifications = action.payload;
+    });
   },
 });
 
