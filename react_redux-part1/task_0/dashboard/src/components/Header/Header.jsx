@@ -1,6 +1,6 @@
-import logo from '../assets/holberton-logo.jpg';
+import logo from '../../assets/holberton-logo.jpg';
 import { useContext } from 'react';
-import newContext from '../Context/context';
+import newContext from '../../Context/context';
 
 function Header() {
     const context = useContext(newContext);
