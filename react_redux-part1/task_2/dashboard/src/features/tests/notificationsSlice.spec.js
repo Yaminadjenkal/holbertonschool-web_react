@@ -19,8 +19,8 @@ describe('notificationsSlice', () => {
   test('should remove notification when markNotificationAsRead is dispatched', () => {
     const state = {
       notifications: [
-        { id: 1, value: 'test 1' },
-        { id: 2, value: 'test 2' },
+        { id: 1, value: 'New course available' },
+        { id: 2, value: 'New resume available' },
       ],
       displayDrawer: true,
     };
