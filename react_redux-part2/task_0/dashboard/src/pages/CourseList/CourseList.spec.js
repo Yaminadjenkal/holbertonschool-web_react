@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
-import CourseList from './CourseList';
 import store from '../../app/store';
+import CourseList from './CourseList';
 
 const renderCourseList = () =>
   render(
@@ -19,12 +19,10 @@ test('renders course list table', () => {
   ).toBeInTheDocument();
 });
 
-test('renders course list heading', () => {
+test('renders no course available message', () => {
   renderCourseList();
 
   expect(
-    screen.getByRole('heading', {
-      name: /course list/i,
-    })
+    screen.getByText(/no course available yet/i)
   ).toBeInTheDocument();
 });

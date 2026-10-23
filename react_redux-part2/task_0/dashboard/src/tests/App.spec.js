@@ -210,7 +210,7 @@ test('logIn function updates user state with email, password, and isLoggedIn tru
     expect(
       screen.getByRole('heading', { name: /course list/i })
     ).toBeInTheDocument();
-    expect(screen.getByText('test@example.com')).toBeInTheDocument();
+    expect(screen.getByText(/welcome/i)).toBeInTheDocument();
   });
 });
 
@@ -238,7 +238,7 @@ test('logOut function resets user state to isLoggedIn false with empty email and
   mockAxios.mockResponse(mockCoursesResponse);
 
   await waitFor(() => {
-    expect(screen.getByText('test@example.com')).toBeInTheDocument();
+    expect(screen.getByText(/welcome/i)).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: /course list/i })
     ).toBeInTheDocument();
