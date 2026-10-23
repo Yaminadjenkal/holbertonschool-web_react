@@ -1,3 +1,4 @@
+import { StyleSheetTestUtils } from 'aphrodite';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -6,8 +7,15 @@ import Notifications from './Notifications';
 import notificationsReducer, {
   markNotificationAsRead,
 } from '../../features/notifications/notificationsSlice';
-
 import { getLatestNotification } from '../../utils/utils';
+
+beforeAll(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
+
+afterAll(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
 
 jest.mock('../../utils/utils', () => ({
   getLatestNotification: jest.fn(),
@@ -174,8 +182,7 @@ describe('Notifications component', () => {
       ],
     });
 
-    const items =
-      screen.getAllByRole('listitem');
+    const items = screen.getAllByRole('listitem');
 
     expect(items).toHaveLength(2);
     expect(items[0]).toHaveTextContent(
@@ -183,3 +190,4 @@ describe('Notifications component', () => {
     );
   });
 });
+
