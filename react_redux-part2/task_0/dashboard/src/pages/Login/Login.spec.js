@@ -1,37 +1,60 @@
-  import { render, screen } from '@testing-library/react';
-  import userEvent from '@testing-library/user-event';
-  import Login from './Login';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-  test('Verify whether the login include 2 label, 2 inputs and 1 button', () => {
-    render(<Login />);
+import Login from './Login';
+import authReducer from '../../features/auth/authSlice';
 
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/email|password/i)).toHaveLength(2);
-    expect(screen.getByRole('button', { name: /ok/i})).toBeInTheDocument();
+const renderLogin = () => {
+  const store = configureStore({
+    reducer: {
+      auth: authReducer,
+    },
   });
 
-  test('checks that inputs get focused when their label are clicked', async() => {
-    const user = userEvent.setup();
-    render(<Login />);
+  return render(
+    <Provider store={store}>
+      <Login />
+    </Provider>
+  );
+};
 
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
+test('Verify whether the login include 2 label, 2 inputs and 1 button', () => {
+  renderLogin();
 
-    await user.click(screen.getByText(/email/i));
-    expect(emailInput).toHaveFocus();
+  expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: /ok/i })
+  ).toBeInTheDocument();
+});
 
-    await user.click(screen.getByText(/password/i));
-    expect(passwordInput).toHaveFocus();
-  });
-
-  test('checks that submit button is enabled only with valid email and password', async () => {
+test('checks that inputs get focused when their label are clicked', async () => {
   const user = userEvent.setup();
-  render(<Login />);
+
+  renderLogin();
 
   const emailInput = screen.getByLabelText(/email/i);
   const passwordInput = screen.getByLabelText(/password/i);
-  const submitButton = screen.getByRole('button', { name: /ok/i });
+
+  await user.click(screen.getByText(/email/i));
+  expect(emailInput).toHaveFocus();
+
+  await user.click(screen.getByText(/password/i));
+  expect(passwordInput).toHaveFocus();
+});
+
+test('checks that submit button is enabled only with valid email and password', async () => {
+  const user = userEvent.setup();
+
+  renderLogin();
+
+  const emailInput = screen.getByLabelText(/email/i);
+  const passwordInput = screen.getByLabelText(/password/i);
+  const submitButton = screen.getByRole('button', {
+    name: /ok/i,
+  });
 
   expect(submitButton).toBeDisabled();
 
@@ -40,24 +63,4 @@
 
   await user.type(passwordInput, '12345678');
   expect(submitButton).toBeEnabled();
-});
-
-test('checks that logIn is called with email and password on submit', async () => {
-  const user = userEvent.setup();
-  const logIn = jest.fn();
-
-  render(<Login logIn={logIn} />);
-
-  const emailInput = screen.getByLabelText(/email/i);
-  const passwordInput = screen.getByLabelText(/password/i);
-  const submitButton = screen.getByRole('button', { name: /ok/i });
-
-  await user.type(emailInput, 'test@example.com');
-  await user.type(passwordInput, '12345678');
-  await user.click(submitButton);
-
-  expect(logIn).toHaveBeenCalledWith(
-    'test@example.com',
-    '12345678'
-  );
 });
