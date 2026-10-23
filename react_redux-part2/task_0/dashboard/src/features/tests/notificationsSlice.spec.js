@@ -5,6 +5,7 @@ import notificationsReducer, {
 describe('notificationsSlice', () => {
   const initialState = {
     notifications: [],
+    displayDrawer: false,
   };
 
   test('should return initial state', () => {
@@ -19,6 +20,7 @@ describe('notificationsSlice', () => {
         { id: 1, value: 'New course available' },
         { id: 2, value: 'New resume available' },
       ],
+      displayDrawer: false,
     };
 
     const result = notificationsReducer(

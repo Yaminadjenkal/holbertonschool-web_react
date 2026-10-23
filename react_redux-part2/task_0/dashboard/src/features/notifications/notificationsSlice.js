@@ -4,6 +4,7 @@ import { getLatestNotification } from '../../utils/utils';
 
 const initialState = {
   notifications: [],
+  displayDrawer: false,
 };
 
 const API_BASE_URL = 'http://localhost:5173';
@@ -17,9 +18,7 @@ export const fetchNotifications = createAsyncThunk(
   async () => {
     const response = await axios.get(ENDPOINTS.notifications);
 
-    const data = response.data.notifications;
-
-    return data.map((notification) => {
+    return response.data.notifications.map((notification) => {
       if (notification.id === 3) {
         return {
           ...notification,
@@ -37,17 +36,25 @@ export const fetchNotifications = createAsyncThunk(
 const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
+
   reducers: {
+    showDrawer: (state) => {
+      state.displayDrawer = true;
+    },
+
+    hideDrawer: (state) => {
+      state.displayDrawer = false;
+    },
+
     markNotificationAsRead: (state, action) => {
       const id = action.payload;
-
-      console.log(id);
 
       state.notifications = state.notifications.filter(
         (notification) => notification.id !== id
       );
     },
   },
+
   extraReducers: (builder) => {
     builder.addCase(fetchNotifications.fulfilled, (state, action) => {
       state.notifications = action.payload;
@@ -56,6 +63,8 @@ const notificationsSlice = createSlice({
 });
 
 export const {
+  showDrawer,
+  hideDrawer,
   markNotificationAsRead,
 } = notificationsSlice.actions;
 
